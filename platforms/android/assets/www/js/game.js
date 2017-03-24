@@ -21,7 +21,7 @@
 
 var stage = null; 
 var renderer = null;
-var ratio = 360 / 640;
+var ratio = 320 / 480;
 
 //Set aliases
 var Container = PIXI.Container,
@@ -72,7 +72,7 @@ var gameProcess = {
         //Create a Pixi stage and renderer and add the 
         //renderer.view to the DOM
         stage = new Container(); 
-        renderer = autoDetectRenderer(300,640,{
+        renderer = autoDetectRenderer(320,480,{
             transparent: false,
             backgroundColor: '0x1e3d7b' //'0x86D06F'
         }); //window.innerWidth, window.innerHeight
@@ -86,7 +86,13 @@ var gameProcess = {
         // gameStage.appendChild(renderer.view);
        document.body.appendChild(renderer.view);
 
-        //renderer.view.style.position = "absolute";
+		renderer.view.style.boder = "1px dashed black";
+		
+        renderer.view.style.position = "absolute";
+		renderer.view.style.display = "block";
+		renderer.autoResize = true;
+		renderer.resize(window.innerWidth, window.innerHeight-50);
+		
         // renderer.view.style.top = "0px";
         // renderer.view.style.left = "0px";
 
@@ -94,13 +100,12 @@ var gameProcess = {
         //PIXI.BaseTexture.SCALE_MODE.DEFAULT = PIXI.BaseTexture.SCALE_MODE.NEAREST;
         //PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
-        loader
-        .add("../img/shapeSheet.json")
-        //.onComplete = this.tileArraySetup()
+		//.onComplete = this.tileArraySetup()
         // use callback
-        .once('complete', this.gameSetup.bind(this))
-        .load(); //this.gameSetup
-
+		
+        loader.add("../img/shapeSheet.json").once('complete', this.gameSetup.bind(this)).load(); //this.gameSetup
+		//loader.add("http://localhost:8080/img/shapeSheet.png").once('complete', this.gameSetup.bind(this)).load(); //this.gameSetup
+		
         return this;
     },
 
@@ -116,10 +121,10 @@ var gameProcess = {
         var messageEnd = this.messageEnd;
       
         //Set renderer properties
-        renderer.view.style.position="absolute";
-        renderer.view.style.display="block";
-        renderer.autoResize=true;
-        renderer.resize(window.innerWidth, window.innerHeight);
+        //renderer.view.style.position="absolute";
+        //renderer.view.style.display="block";
+        //renderer.autoResize=true;
+        //renderer.resize(window.innerWidth, window.innerHeight);
 
         //----------------------------------------------------
                
@@ -209,7 +214,8 @@ var gameProcess = {
                     
                     if (endGame) {
                         //messageEnd.name = "messageEnd";
-                        messageEnd.position.set(window.innerWidth / 5, window.innerHeight / 2); //??
+                        messageEnd.position.set(window.innerWidth / 5, (window.innerHeight) / 2); //??
+						//messageEnd.position.set(renderer.view.style.width / 5, renderer.view.style.height / 2); //??
                         stage.addChild(messageEnd);
                         //renderer.render(stage);
                         //requestAnimationFrame(stage);
@@ -226,8 +232,10 @@ var gameProcess = {
                 //End of handling tile events
 
                 //Set the size of the sprites
-                var w = (window.innerWidth / tileColsNum) ;
-                var h = (window.innerHeight / tileRowsNum) ;               
+                var w = ((window.innerWidth) / tileColsNum) ;
+                var h = ((window.innerHeight -50)/ tileRowsNum) ;   
+				//var w = (renderer.view.style.width / tileColsNum) ;
+                //var h = (renderer.view.style.height / tileRowsNum) ; 
 
                 stage.addChild(shape);
                 shape.position.set(col * w, row * h); //(col*154,row*174);  ,150,170
@@ -370,14 +378,14 @@ function tileArraySetup() {
 //Resize the game stage and the tiles
 function resize() {
     if (window.innerWidth / window.innerHeight >= ratio) {
-        var w = window.innerHeight * ratio;
-        var h = window.innerHeight;
+        var w = (window.innerHeight -50) * ratio;
+        var h = window.innerHeight - 50;
     } else {
         var w = window.innerWidth;
-        var h = window.innerWidth / ratio;
+        var h = (window.innerWidth) / ratio;
     }
     renderer.view.style.width = w - 2 + 'px';
     renderer.view.style.height = h - 4 + 'px';
-}
+};
 window.onresize = resize;
 
