@@ -1,4 +1,4 @@
-# A Blank PhoneGap App
+# Memory Game PhoneGap App
 
 ## Usage
 
