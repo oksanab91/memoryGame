@@ -18,6 +18,7 @@
  * under the License.
  */
 
+//variables
 var stage = null; 
 var renderer = null;
 var ratio = 320 / 480;
