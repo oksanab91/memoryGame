@@ -28,6 +28,10 @@
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
+
+        <!--<meta http-equiv="Content-Security-Policy" content="img-src *">-->
+        <!--<meta http-equiv="Content-Security-Policy" content="style-src *  'unsafe-inline'; script-src 'self'  https://github.com/oksanab91/Memory-game/blob/master/www/shapeSheet.json 'unsafe-inline'  'unsafe-eval';">-->
+
         <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">-->
 		
        <!--<meta http-equiv="Content-Security-Policy" content="default-src *; style-src *  'unsafe-inline'; script-src *  'unsafe-inline'; media-src *">-->
@@ -47,7 +51,7 @@
         <!-- Bootstrap Core CSS -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <!--<script src="pixi.min.js"></script>-->
-        
+        <!--<link href="https://raw.githubusercontent.com/oksanab91/Memory-game/master/www/img/shapeSheet.json" rel="json">-->
         <title>Balu Game</title>
     </head>
     <body>
@@ -63,12 +67,12 @@
         
         
         <!-- jQuery -->
-        <script src="js/jquery.js"></script>
-        <script type="text/javascript" src="cordova.js"></script>
+        <script src="jquery.js"></script>
+        <script src="cordova.js"></script>
         <!--<script type="text/javascript" src="js/index.js"></script>-->
         <script src="pixi.min.js"></script>
         <script type="text/javascript" src="js/game.js"></script>
-        
+                
 
         <script>
             $(document).ready(function () {                

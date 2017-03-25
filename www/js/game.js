@@ -18,6 +18,75 @@
  * under the License.
  */
 
+// var jsondata = {"frames": {
+
+// "shape1.png":
+// {
+// 	"frame": {"x":0,"y":0,"w":151,"h":176},
+// 	"rotated": false,
+// 	"trimmed": false,
+// 	"spriteSourceSize": {"x":0,"y":0,"w":151,"h":176},
+// 	"sourceSize": {"w":151,"h":176},
+// 	"pivot": {"x":0.5,"y":0.5}
+// },
+// "shape2.png":
+// {
+// 	"frame": {"x":151,"y":0,"w":153,"h":172},
+// 	"rotated": false,
+// 	"trimmed": false,
+// 	"spriteSourceSize": {"x":0,"y":0,"w":153,"h":172},
+// 	"sourceSize": {"w":153,"h":172},
+// 	"pivot": {"x":0.5,"y":0.5}
+// },
+// "shape3.png":
+// {
+// 	"frame": {"x":304,"y":0,"w":150,"h":172},
+// 	"rotated": false,
+// 	"trimmed": false,
+// 	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":172},
+// 	"sourceSize": {"w":150,"h":172},
+// 	"pivot": {"x":0.5,"y":0.5}
+// },
+// "shape4.png":
+// {
+// 	"frame": {"x":0,"y":176,"w":147,"h":174},
+// 	"rotated": false,
+// 	"trimmed": false,
+// 	"spriteSourceSize": {"x":0,"y":0,"w":147,"h":174},
+// 	"sourceSize": {"w":147,"h":174},
+// 	"pivot": {"x":0.5,"y":0.5}
+// },
+// "shape5.png":
+// {
+// 	"frame": {"x":147,"y":176,"w":151,"h":174},
+// 	"rotated": false,
+// 	"trimmed": false,
+// 	"spriteSourceSize": {"x":0,"y":0,"w":151,"h":174},
+// 	"sourceSize": {"w":151,"h":174},
+// 	"pivot": {"x":0.5,"y":0.5}
+// },
+// "shape6.png":
+// {
+// 	"frame": {"x":298,"y":176,"w":151,"h":174},
+// 	"rotated": false,
+// 	"trimmed": false,
+// 	"spriteSourceSize": {"x":0,"y":0,"w":151,"h":174},
+// 	"sourceSize": {"w":151,"h":174},
+// 	"pivot": {"x":0.5,"y":0.5}
+// }},
+// "meta": {
+// 	"app": "http://www.codeandweb.com/texturepacker",
+// 	"version": "1.0",
+// 	"image": "shapeSheet.png",
+// 	"format": "RGBA8888",
+// 	"size": {"w":454,"h":350},
+// 	"scale": "1",
+// 	"smartupdate": "$TexturePacker:SmartUpdate:fa409511aa8949223c97bdced213f58f:3143902cc01260646aec453feee66fb0:281587cbd5ae9fedd81745d08ee43758$"
+// }
+// };
+
+
+//===================================
 
 var stage = null; 
 var renderer = null;
@@ -75,11 +144,11 @@ var gameProcess = {
         renderer = autoDetectRenderer(320,480,{
             initialising: false,
             transparent: true,
+            alpha: 0.5,
             resolution: 1            
         }); //window.innerWidth, window.innerHeight
         
         //backgroundColor: '0xff0000' //'0x1e3d7b' //'0x86D06F'
-
         
 
         // stage.width = renderer.width;
@@ -116,13 +185,24 @@ var gameProcess = {
         // use callback
 		
         //"https:///github.com//oksanab91//memoryGame//tree//master//www//img//shapeSheet.json"
+//https://github.com/oksanab91/Memory-game/raw/master/www/img/shapeSheet.json
 
-       // loader.add("../img/shapeSheet.json").once('complete', this.gameSetup.bind(this)).load(); //this.gameSetup
+       //??? loader.add("../img/shapeSheet.json").once('complete', this.gameSetup.bind(this)).load(); //this.gameSetup
+
+
         loader.add({name: "shapeSheet.json", url: "https://raw.githubusercontent.com/oksanab91/memoryGame/master/www/img/shapeSheet.json", crossOrigin: true})
         .once("complete", this.gameSetup.bind(this)).load(); //this.gameSetup
 
 		//loader.add("http://localhost:8080/img/shapeSheet.png").once('complete', this.gameSetup.bind(this)).load(); //this.gameSetup
 		
+        // try{
+        //     loader.add({key: "shapesjson", value: jsondata, url: "https://github.com/oksanab91/Memory-game/blob/master/www/shapeSheet.json"})
+        //     .once('complete', this.gameSetup.bind(this)).load();
+
+        // }catch(e){
+        //     alert(e.message);
+        // }        
+
         return this;
     },
 
@@ -167,6 +247,7 @@ var gameProcess = {
                 shape.isSelected=false;
                 shape.tint = 0x000000;
                 shape.alpha = 0.5;
+                shape.transparent = false;
 
                 //Handle tile events
                 shape.mousedown = shape.touchstart = function (mouseData) {
@@ -182,6 +263,7 @@ var gameProcess = {
                         // show the tile
                         this.tint = 0xffffff;
                         this.alpha = 1;
+                        //shape.transparent = false;
                         
 						//Refresh the screen
                         animate();
@@ -214,7 +296,7 @@ var gameProcess = {
                                 runTimer(firstTile, secondTile);
                             }
                             
-                            //animate();
+                            animate();
 
                             if (countTilesOpen === tileRowsNum * tileColsNum) {
                                 endGame = true;
@@ -232,7 +314,7 @@ var gameProcess = {
 						//messageEnd.position.set(renderer.view.style.width / 5, renderer.view.style.height / 2); //??
                         stage.addChild(messageEnd);
                         
-                        //animate();
+                        animate();
                        //gameProcess.playSound();
                     }
 
