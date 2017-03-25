@@ -71,12 +71,17 @@ var gameProcess = {
 
         //Create a Pixi stage and renderer and add the 
         //renderer.view to the DOM
-        stage = new Container(); 
+        // stage = new Container(); 
         renderer = autoDetectRenderer(320,480,{
-            transparent: false,
-            backgroundColor: '0x1e3d7b' //'0x86D06F'
+            initialising: false,
+            transparent: true,
+            resolution: 1            
         }); //window.innerWidth, window.innerHeight
         
+        //backgroundColor: '0xff0000' //'0x1e3d7b' //'0x86D06F'
+
+        
+
         // stage.width = renderer.width;
         // //stage.width = renderer.view.width/renderer.resolution; ??
         // stage.height = renderer.height;
@@ -84,17 +89,24 @@ var gameProcess = {
 
         // var gameStage = document.getElementById("gameStage");
         // gameStage.appendChild(renderer.view);
-       document.body.appendChild(renderer.view);
+        document.body.appendChild(renderer.view);
+        renderer.backgroundColor = '0x990000'; //'0x1e3d7b'; // '0xff0000'++;
 
+        stage = new Container(); 
+        renderer.render(stage);
 		renderer.view.style.boder = "1px dashed black";
 		
         renderer.view.style.position = "absolute";
+        renderer.view.style.left = "1px";
 		renderer.view.style.display = "block";
-		renderer.autoResize = true;
+		renderer.autoResize = true;        
 		renderer.resize(window.innerWidth, window.innerHeight-50);
 		
+		//Refresh the screen
+        animate();
+
         // renderer.view.style.top = "0px";
-        // renderer.view.style.left = "0px";
+        
 
         //For resizing the game
         //PIXI.BaseTexture.SCALE_MODE.DEFAULT = PIXI.BaseTexture.SCALE_MODE.NEAREST;
@@ -103,7 +115,12 @@ var gameProcess = {
 		//.onComplete = this.tileArraySetup()
         // use callback
 		
-        loader.add("../img/shapeSheet.json").once('complete', this.gameSetup.bind(this)).load(); //this.gameSetup
+        //"https:///github.com//oksanab91//memoryGame//tree//master//www//img//shapeSheet.json"
+
+       // loader.add("../img/shapeSheet.json").once('complete', this.gameSetup.bind(this)).load(); //this.gameSetup
+        loader.add({name: "shapeSheet.json", url: "https://raw.githubusercontent.com/oksanab91/memoryGame/master/www/img/shapeSheet.json", crossOrigin: true})
+        .once("complete", this.gameSetup.bind(this)).load(); //this.gameSetup
+
 		//loader.add("http://localhost:8080/img/shapeSheet.png").once('complete', this.gameSetup.bind(this)).load(); //this.gameSetup
 		
         return this;
@@ -122,8 +139,8 @@ var gameProcess = {
       
         //Set renderer properties
         //renderer.view.style.position="absolute";
-        //renderer.view.style.display="block";
-        //renderer.autoResize=true;
+        // renderer.view.style.display="block";
+        // renderer.autoResize=true;
         //renderer.resize(window.innerWidth, window.innerHeight);
 
         //----------------------------------------------------
@@ -165,8 +182,8 @@ var gameProcess = {
                         // show the tile
                         this.tint = 0xffffff;
                         this.alpha = 1;
-                        //renderer.render(stage);
-                        //requestAnimationFrame(stage);
+                        
+						//Refresh the screen
                         animate();
                     }
 
@@ -197,9 +214,7 @@ var gameProcess = {
                                 runTimer(firstTile, secondTile);
                             }
                             
-                            //renderer.render(stage);
-                            //requestAnimationFrame(stage);
-                            animate();
+                            //animate();
 
                             if (countTilesOpen === tileRowsNum * tileColsNum) {
                                 endGame = true;
@@ -212,45 +227,44 @@ var gameProcess = {
                         countClicked = 0;                         
                     }
                     
-                    if (endGame) {
-                        //messageEnd.name = "messageEnd";
-                        messageEnd.position.set(window.innerWidth / 5, (window.innerHeight) / 2); //??
+                    if (endGame) {                        
+                        messageEnd.position.set(window.innerWidth / 4, (window.innerHeight - 50) / 2); //??
 						//messageEnd.position.set(renderer.view.style.width / 5, renderer.view.style.height / 2); //??
                         stage.addChild(messageEnd);
-                        //renderer.render(stage);
-                        //requestAnimationFrame(stage);
-                        animate();
-
-                       // gameProcess.playSound();
+                        
+                        //animate();
+                       //gameProcess.playSound();
                     }
 
                     //Preserve events counters
                     gameProcess.countClicked = countClicked;
                     gameProcess.countTilesOpen = countTilesOpen;
                     gameProcess.endGame = endGame;
+
+					//Refresh the screen
+                    animate();
+
                 };
                 //End of handling tile events
 
                 //Set the size of the sprites
                 var w = ((window.innerWidth) / tileColsNum) ;
                 var h = ((window.innerHeight -50)/ tileRowsNum) ;   
-				//var w = (renderer.view.style.width / tileColsNum) ;
-                //var h = (renderer.view.style.height / tileRowsNum) ; 
+				// //var w = (renderer.view.style.width / tileColsNum) ;
+                // //var h = (renderer.view.style.height / tileRowsNum) ; 
+                // var w=100;
+                // var h=100;
 
                 stage.addChild(shape);
                 shape.position.set(col * w, row * h); //(col*154,row*174);  ,150,170
                 shape.width = w-2; //150;
-                shape.height = h-4; //170;   
-                
-
-                //Update the screen
-                //renderer.render(stage); 
-                //requestAnimationFrame(stage);  
-                animate();
+                shape.height = h-4; //170;                
             }
         }
         //End of filling tiles loop
-       
+		
+		//Update the screen
+        animate();
         return (this);
     },
     //End of gameSetup
@@ -270,8 +284,7 @@ var gameProcess = {
             sprite.alpha = 0.5;
         });
 
-        //Refresh the screen
-        //renderer.render(stage);
+        //Refresh the screen        
         animate();
 
         window.gameProcess.countClicked = 0;
@@ -291,11 +304,11 @@ var gameProcess = {
 };
 //End section 'Main logic of the game'
 
-
+//Refresh the screen
 function animate(){
-        //alert("animate start");
-        requestAnimationFrame(animate.bind(window.gameProcess));
+        //alert("animate start");        
         renderer.render(stage);
+        window.requestAnimationFrame(animate.bind(window.gameProcess));
         //return this;
     };
 
@@ -323,9 +336,7 @@ function hideTiles(){
     secondTile.alpha = 0.5;
     secondTile.isSelected = false;
 
-    //Update the screen
-    //renderer.render(stage);
-//requestAnimationFrame(stage);
+    //Update the screen   
     animate();
 };
 
