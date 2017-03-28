@@ -30,7 +30,7 @@ loader = PIXI.loader,
 resources = PIXI.loader.resources,
 Sprite = PIXI.Sprite,
 TextureCache = PIXI.TextureCache,
-Text = PIXI.Text,
+TextPixi = PIXI.Text,
 Rectangle = PIXI.Rectangle;
 //PIXI.Application(); ??
 
@@ -45,7 +45,7 @@ var gameProcess = {
     countClicked: 0,
     countTilesOpen: 0,
    
-    messageEnd: new Text(
+    messageEnd: new TextPixi(
             "You won!",
             { fontFamily: "Arial", fontSize: 52, fill: "#b82e8a" }),
 
@@ -54,7 +54,7 @@ var gameProcess = {
     //Create a Pixi stage and renderer
     gameStageSet: function(cols, rows){
         //320 by 480  256, 256
-
+//alert("gameStageSet start");
         this.tileColsNum = cols;
         this.tileRowsNum = rows;
 
@@ -63,8 +63,7 @@ var gameProcess = {
             type = "canvas"
             //to check if pixi is loaded properly
             // PIXI.utils.sayHello(type)
-        };
-    
+        }    
 
         //Fill array of tiles with shapes for the game
         this.tiles = tileArraySetup();
@@ -80,7 +79,7 @@ var gameProcess = {
         }); //window.innerWidth, window.innerHeight
         
         //backgroundColor: '0xff0000' //'0x1e3d7b' //'0x86D06F'
-        
+ //alert("gameStageSet renderer detected"); 
 
         // stage.width = renderer.width;
         // //stage.width = renderer.view.width/renderer.resolution; ??
@@ -90,20 +89,23 @@ var gameProcess = {
         // var gameStage = document.getElementById("gameStage");
         // gameStage.appendChild(renderer.view);
         document.body.appendChild(renderer.view);
-        renderer.backgroundColor = '0x990000'; //'0x1e3d7b'; // '0xff0000'++;
-
+        renderer.backgroundColor = '0xff4000'; //0x1e3d7b'; //'0x990000'; //'0x1e3d7b'; // '0xff0000'++;
+//alert("color set");
         stage = new Container(); 
         renderer.render(stage);
-		renderer.view.style.boder = "1px dashed black";
+		//renderer.view.style.boder = "1px dashed black";
 		
         renderer.view.style.position = "absolute";
-        renderer.view.style.left = "1px";
+        renderer.view.style.top = "50px";
+        renderer.view.style.left = "0px";
 		renderer.view.style.display = "block";
 		renderer.autoResize = true;        
-		renderer.resize(window.innerWidth, window.innerHeight-50);
+		renderer.resize(window.innerWidth, window.innerHeight - 50);
+        //resizeRenderer();
 		
 		//Refresh the screen
         animate();
+//alert("animated");
 
         // renderer.view.style.top = "0px";
         
@@ -115,25 +117,17 @@ var gameProcess = {
 		//.onComplete = this.tileArraySetup()
         // use callback
 		
-        //"https:///github.com//oksanab91//memoryGame//tree//master//www//img//shapeSheet.json"
-//https://github.com/oksanab91/Memory-game/raw/master/www/img/shapeSheet.json
+      
 
-       //??? loader.add("../img/shapeSheet.json").once('complete', this.gameSetup.bind(this)).load(); //this.gameSetup
+//alert("start load pic");
+       loader.add("shapeSheet.json").once('complete', this.gameSetup.bind(this)).load(); //this.gameSetup
+//alert("end load pic");
 
-
-        loader.add({name: "shapeSheet.json", url: "https://raw.githubusercontent.com/oksanab91/memoryGame/master/www/img/shapeSheet.json", crossOrigin: true})
-        .once("complete", this.gameSetup.bind(this)).load(); //this.gameSetup
+        // loader.add({name: "shapeSheet.json", url: "https://raw.githubusercontent.com/oksanab91/memoryGame/master/www/img/shapeSheet.json", crossOrigin: true})
+        // .once("complete", this.gameSetup.bind(this)).load(); //this.gameSetup
 
 		//loader.add("http://localhost:8080/img/shapeSheet.png").once('complete', this.gameSetup.bind(this)).load(); //this.gameSetup
-		
-        // try{
-        //     loader.add({key: "shapesjson", value: jsondata, url: "https://github.com/oksanab91/Memory-game/blob/master/www/shapeSheet.json"})
-        //     .once('complete', this.gameSetup.bind(this)).load();
-
-        // }catch(e){
-        //     alert(e.message);
-        // }        
-
+	    
         return this;
     },
 
@@ -147,17 +141,17 @@ var gameProcess = {
         var firstTile = this.firstTile;
         var secondTile = this.secondTile;       
         var messageEnd = this.messageEnd;
-      
-        //Set renderer properties
-        //renderer.view.style.position="absolute";
-        // renderer.view.style.display="block";
-        // renderer.autoResize=true;
-        //renderer.resize(window.innerWidth, window.innerHeight);
 
+        var colWidth;
+        var colHeight;
+        if(tileColsNum>0 && tileRowsNum>0){
+            colWidth = window.innerWidth / tileColsNum - 4;
+            colHeight = (window.innerHeight - 50)/ tileRowsNum - 4;
+        }
         //----------------------------------------------------
                
         var setId = 0;        
-
+//alert("gameSetup func");
         //Start loop to create sprites by tilesArray items
         //and fill the stage with shapes images created from preloaded texture atlas
         for(var row = 0; row < tileRowsNum; row ++){    
@@ -167,8 +161,7 @@ var gameProcess = {
                 setId++;
                                 
                 var id = tilesArray[setId-1];
-                var texture = TextureCache[id];
-                //var texture = loader.resources[id].texture;
+                var texture = TextureCache[id];                
                 var shape = new Sprite(texture);
 
                 shape.keyTile = id;
@@ -179,10 +172,10 @@ var gameProcess = {
                 shape.tint = 0x000000;
                 shape.alpha = 0.5;
                 shape.transparent = false;
-
+//alert("sprite created");
                 //Handle tile events
                 shape.mousedown = shape.touchstart = function (mouseData) {
-
+//alert("mousedown event");
                     //Start and continue to count events
                     var countClicked = gameProcess.countClicked;
                     var countTilesOpen = gameProcess.countTilesOpen;
@@ -212,7 +205,7 @@ var gameProcess = {
                     if(countClicked === 2){                                                
                         secondTile = this;                       
 
-                        if(firstTile != null || secondTile != null){
+                        if(firstTile !== null || secondTile !== null){
                         
                             //Compare two tiles in the pare -
                             //if they are the same, do not hide the shapes of the tiles                                                    
@@ -241,10 +234,9 @@ var gameProcess = {
                     }
                     
                     if (endGame) {                        
-                        messageEnd.position.set(window.innerWidth / 4, (window.innerHeight - 50) / 2); //??
-						//messageEnd.position.set(renderer.view.style.width / 5, renderer.view.style.height / 2); //??
-                        stage.addChild(messageEnd);
-                        
+                        messageEnd.position.set(window.innerWidth / 4, window.innerHeight / 2);
+                        						
+                        stage.addChild(messageEnd);                        
                         animate();
                        //gameProcess.playSound();
                     }
@@ -261,17 +253,18 @@ var gameProcess = {
                 //End of handling tile events
 
                 //Set the size of the sprites
-                var w = ((window.innerWidth) / tileColsNum) ;
-                var h = ((window.innerHeight -50)/ tileRowsNum) ;   
-				// //var w = (renderer.view.style.width / tileColsNum) ;
-                // //var h = (renderer.view.style.height / tileRowsNum) ; 
+                
+                // var w = window.innerWidth / tileColsNum ;
+                // var h = (window.innerHeight-80)/ tileRowsNum ;   
+				// var w = (renderer.width / tileColsNum) ;
+                // var h = (renderer.height / tileRowsNum) ; 
                 // var w=100;
                 // var h=100;
-
-                stage.addChild(shape);
-                shape.position.set(col * w, row * h); //(col*154,row*174);  ,150,170
-                shape.width = w-2; //150;
-                shape.height = h-4; //170;                
+ 
+                shape.position.set(col * (colWidth + 4), row * (colHeight + 4)); //(col*154,row*174);  ,150,170
+                shape.width = colWidth; //150;
+                shape.height = colHeight; //170;                
+                stage.addChild(shape);                
             }
         }
         //End of filling tiles loop
@@ -284,7 +277,7 @@ var gameProcess = {
 
     //Hide all the sprites and text for the new game
     clearStage: function () {
-       
+//alert("clearStage func");     
         //Remove message from the stage
         if (stage.getChildAt(stage.children.length - 1) === window.gameProcess.messageEnd) {
             stage.removeChild(window.gameProcess.messageEnd);
@@ -323,7 +316,7 @@ function animate(){
         renderer.render(stage);
         window.requestAnimationFrame(animate.bind(window.gameProcess));
         //return this;
-    };
+    }
 
 function runTimer(firstTile, secondTile) {
     //myVar = setTimeout(function () { alert("Hello") }, 3000);
@@ -334,7 +327,7 @@ function runTimer(firstTile, secondTile) {
         hideTiles();      
     }, 1000);
 
-};
+}
 
 //Hide the wrong selected pare of tiles
 function hideTiles(){        
@@ -351,7 +344,7 @@ function hideTiles(){
 
     //Update the screen   
     animate();
-};
+}
 
 //1 create two copy of array,
 //2 run through these arrays and pickup one item from each by random Index,
@@ -364,16 +357,18 @@ function tileArraySetup() {
     //Create copy of the array
     tileOriginal = shapes.slice();
     var tileOriginalLength = tileOriginal.length;
-
+    var randomInd;
+    var tile;
+    
     //Run through the array and pickup one item by random Index
     //Get the item and remove it from the source array
     //Add the item to result array
     var ind = 0;
     while(ind < tileOriginalLength){
         //Random index
-        var randomInd = Math.floor((Math.random() * tileOriginal.length) + 1);
+        randomInd = Math.floor((Math.random() * tileOriginal.length) + 1);
         //Picked item
-        var tile = tileOriginal.splice(randomInd - 1, 1);
+        tile = tileOriginal.splice(randomInd - 1, 1);
         //Result array
         tileResult = tileResult.concat(tile);
 
@@ -387,7 +382,7 @@ function tileArraySetup() {
     ind = 0;
     while (ind < tileOriginalLength) {
         //Random index
-        var randomInd = Math.floor((Math.random() * tileOriginal.length) + 1);
+        randomInd = Math.floor((Math.random() * tileOriginal.length) + 1);
         //Picked item
         tile = tileOriginal.splice(randomInd - 1, 1);
         //Result array
@@ -395,21 +390,32 @@ function tileArraySetup() {
 
         ind++;
     }
-
+//alert("pic array filled with rec:" + tileResult.length);
     return (tileResult);
-};
+}
 
 //Resize the game stage and the tiles
-function resize() {
-    if (window.innerWidth / window.innerHeight >= ratio) {
-        var w = (window.innerHeight -50) * ratio;
-        var h = window.innerHeight - 50;
-    } else {
-        var w = window.innerWidth;
-        var h = (window.innerWidth) / ratio;
-    }
-    renderer.view.style.width = w - 2 + 'px';
-    renderer.view.style.height = h - 4 + 'px';
-};
-window.onresize = resize;
+var resizeRenderer = function() {
+//   var w;
+//   var h;
+//   //alert("resize");
+//     if (window.innerWidth / window.innerHeight >= ratio) {
+//         w = window.innerHeight * ratio;
+//         h = window.innerHeight;
+//     } else {
+//         w = window.innerWidth;
+//         h = window.innerWidth / ratio;
+//     }
+    
+//     renderer.resize(w,h);
+
+    //renderer.resize(window.innerWidth, window.innerHeight);
+    renderer.resize()
+
+    // renderer.renderer.view.width = w + 'px';
+    // renderer.renderer.view.height = h + 'px';
+}
+//window.onresize = resizeRenderer;
+//window.onpagecreate = gameProcess.gameStageSet;
+//gameProcess.addEventListener("pageshow",gameProcess.gameStageSet);
 

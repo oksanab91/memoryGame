@@ -4,10 +4,9 @@
     <description>
         Concentration mobile game.
     </description>
-    <author email="oksanab767@gmail.com" href="http://phonegap.com">
+    <author href="https://github.com/oksanab91/Memory-game.git">
         Oksana B
     </author>
-    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -19,6 +18,8 @@
     <gap:splash gap:density="mdpi" gap:platform="android" src="res/screen/android/screen-mdpi-portrait.png" />
     <gap:splash gap:density="hdpi" gap:platform="android" src="res/screen/android/screen-hdpi-portrait.png" />
     <gap:splash gap:density="xhdpi" gap:platform="android" src="res/screen/android/screen-xhdpi-portrait.png" />
+    <icon height="48" src="icon.png" width="48" />
+    <content src="index.html" />
     <preference name="permissions" value="none" />
     <preference name="orientation" value="portrait" />
     <preference name="KeepRunning" value="false" />
