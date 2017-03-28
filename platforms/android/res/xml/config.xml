@@ -8,7 +8,7 @@
     <description>
         Concentration mobile game.
     </description>
-    <author href="https://github.com/oksanab91/Memory-game.git">
+    <author href="https://github.com/oksanab91/memoryGame.git">
         Oksana B
     </author>
     <access origin="*" />
@@ -35,6 +35,5 @@
     <preference name="android-minSdkVersion" value="16" />
     <preference name="permissions" value="none" />
     <preference name="orientation" value="portrait" />
-    <preference name="KeepRunning" value="false" />
     <preference name="fullscreen" value="true" />
 </widget>

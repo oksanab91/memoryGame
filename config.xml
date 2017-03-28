@@ -4,11 +4,12 @@
     <description>
         Concentration mobile game.
     </description>
-    <author href="https://github.com/oksanab91/Memory-game.git">
+    <author href="https://github.com/oksanab91/memoryGame.git">
         Oksana B
     </author>
     
     <plugin name="cordova-plugin-whitelist" spec="1" />
+	<plugin name="cordova-plugin-crosswalk-webview" spec="*"/>
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -19,7 +20,7 @@
 
     <preference name="permissions" value="none"/>
     <preference name="orientation" value="portrait"/>
-    <preference name="KeepRunning" value="false"/>
+    <!--<preference name="KeepRunning" value="false"/>-->
 	<!-- all: hides the status bar at the top of the screen -->
     <preference name="fullscreen" value="true" />   
 

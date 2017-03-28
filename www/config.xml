@@ -4,11 +4,12 @@
     <description>
         Concentration mobile game.
     </description>
-    <author email="oksanab767@gmail.com" href="http://phonegap.com">
+    <author href="https://github.com/oksanab91/memoryGame.git">
         Oksana B
     </author>
     
     <plugin name="cordova-plugin-whitelist" spec="1" />
+	<plugin name="cordova-plugin-crosswalk-webview" spec="*"/>
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -19,7 +20,7 @@
 
     <preference name="permissions" value="none"/>
     <preference name="orientation" value="portrait"/>
-    <preference name="KeepRunning" value="false"/>
+    <!--<preference name="KeepRunning" value="false"/>-->
 	<!-- all: hides the status bar at the top of the screen -->
     <preference name="fullscreen" value="true" />   
 
@@ -29,8 +30,8 @@
     <gap:splash src="res/screen/android/screen-hdpi-portrait.png"       gap:platform="android" gap:density="hdpi" />
     <gap:splash src="res/screen/android/screen-xhdpi-portrait.png"      gap:platform="android" gap:density="xhdpi" />
     
-	<icon height="48" src="icon.png" width="48"/>
-	<content src="index.html" />	
+	<icon height="48" src="icon.png" width="48"/>	
+	<content src="index.html" />
     <platform name="android">
         <allow-intent href="market:*" /> 
     </platform>
