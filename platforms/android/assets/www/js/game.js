@@ -44,10 +44,10 @@ var gameProcess = {
     secondTile: null,
     countClicked: 0,
     countTilesOpen: 0,
-   
+   //#b82e8a
     messageEnd: new TextPixi(
             "You won!",
-            { fontFamily: "Arial", fontSize: 52, fill: "#b82e8a" }),
+            { fontFamily: "Arial", fontSize: 52, fill: "#ff0080" }),
 
     endGame: false,
 
@@ -89,7 +89,7 @@ var gameProcess = {
         // var gameStage = document.getElementById("gameStage");
         // gameStage.appendChild(renderer.view);
         document.body.appendChild(renderer.view);
-        renderer.backgroundColor = '0xff4000'; //0x1e3d7b'; //'0x990000'; //'0x1e3d7b'; // '0xff0000'++;
+        renderer.backgroundColor = '0x660027';//'0x80002a'; //'0xff4000'; //0x1e3d7b'; //'0x990000'; //'0x1e3d7b'; // '0xff0000';
 //alert("color set");
         stage = new Container(); 
         renderer.render(stage);
@@ -234,7 +234,8 @@ var gameProcess = {
                     }
                     
                     if (endGame) {                        
-                        messageEnd.position.set(window.innerWidth / 4, window.innerHeight / 2);
+                       // messageEnd.position.set(window.innerWidth / 4, window.innerHeight / 2);
+                        messageEnd.position.set(window.innerWidth / 4, colHeight * 2 - 25);
                         						
                         stage.addChild(messageEnd);                        
                         animate();
